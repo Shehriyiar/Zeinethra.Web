@@ -15,19 +15,32 @@ export type Paged<T> = {
   totalPages: number;
 };
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+async function request<T>(path: string, init?: RequestInit & { token?: string; revalidate?: number | false }): Promise<T> {
+  const { token, revalidate = 60, ...rest } = init || {};
+  const isMutation = Boolean(rest.method && rest.method !== "GET");
+  const shouldRevalidate = typeof window === "undefined" && !isMutation && revalidate !== false;
   const res = await fetch(`${API_BASE}${path}`, {
-    ...init,
+    ...rest,
     headers: {
       "Content-Type": "application/json",
-      ...(init?.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(rest.headers || {}),
     },
-    next: { revalidate: 60 },
+    ...(shouldRevalidate
+      ? { next: { revalidate: typeof revalidate === "number" ? revalidate : 60 } }
+      : { cache: "no-store" as RequestCache }),
   });
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || `Request failed: ${res.status}`);
+    try {
+      const parsed = JSON.parse(text) as { message?: string; title?: string; errors?: Record<string, string[]> };
+      const firstError = parsed.errors ? Object.values(parsed.errors).flat()[0] : undefined;
+      throw new Error(firstError || parsed.message || parsed.title || `Request failed: ${res.status}`);
+    } catch (e) {
+      if (e instanceof Error && !e.message.startsWith("{") && e.message !== text) throw e;
+      throw new Error(text || `Request failed: ${res.status}`);
+    }
   }
 
   const json = (await res.json()) as ApiResponse<T>;
@@ -51,48 +64,67 @@ export const api = {
   getJobs: () => request<Paged<JobDto>>("/api/careers?page=1&pageSize=20&openOnly=true"),
   getResources: () => request<Paged<ResourceDto>>("/api/resources?page=1&pageSize=20"),
   submitEnquiry: (body: EnquiryPayload) =>
-    request<EnquiryDto>("/api/enquiries", { method: "POST", body: JSON.stringify(body), cache: "no-store" }),
+    request<EnquiryDto>("/api/enquiries", { method: "POST", body: JSON.stringify(body) }),
   saveEnquiryDraft: (body: Record<string, unknown>) =>
-    request<EnquiryDto>("/api/enquiries/draft", { method: "POST", body: JSON.stringify(body), cache: "no-store" }),
+    request<EnquiryDto>("/api/enquiries/draft", { method: "POST", body: JSON.stringify(body) }),
   bookDemo: (body: BookingPayload) =>
-    request<unknown>("/api/bookings", { method: "POST", body: JSON.stringify(body), cache: "no-store" }),
+    request<unknown>("/api/bookings", { method: "POST", body: JSON.stringify(body) }),
   newsletter: (email: string, fullName?: string) =>
     request<unknown>("/api/newsletter", {
       method: "POST",
       body: JSON.stringify({ email, fullName, source: "website" }),
-      cache: "no-store",
     }),
   chat: (message: string, sessionId?: string) =>
     request<{ reply: string; sessionId: string }>("/api/ai/chat", {
       method: "POST",
       body: JSON.stringify({ message, sessionId, history: [] }),
-      cache: "no-store",
     }),
   search: (query: string) =>
     request<{ results: SearchItem[] }>("/api/ai/search", {
       method: "POST",
       body: JSON.stringify({ query, limit: 8 }),
-      cache: "no-store",
     }),
   recommend: (answers: Record<string, string>) =>
     request<RecommendDto>("/api/ai/recommend", {
       method: "POST",
       body: JSON.stringify({ answers }),
-      cache: "no-store",
     }),
   roi: (payload: RoiPayload) =>
     request<RoiDto>("/api/ai/roi", {
       method: "POST",
       body: JSON.stringify(payload),
-      cache: "no-store",
     }),
   consent: (payload: ConsentPayload) =>
-    request<unknown>("/api/consent", { method: "POST", body: JSON.stringify(payload), cache: "no-store" }),
+    request<unknown>("/api/consent", { method: "POST", body: JSON.stringify(payload) }),
   logEvent: (eventName: string, pageUrl?: string) =>
     request<unknown>("/api/analytics/events", {
       method: "POST",
       body: JSON.stringify({ eventName, source: "web", pageUrl, sessionId: "web" }),
-      cache: "no-store",
+    }),
+  login: (email: string, password: string) =>
+    request<TokenResponse>("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    }),
+  getEnquiriesAdmin: (token: string) =>
+    request<Paged<EnquiryAdminDto>>("/api/enquiries?page=1&pageSize=50", { token, revalidate: false }),
+  getArticlesAdmin: (token: string) =>
+    request<Paged<ArticleDto>>("/api/articles?page=1&pageSize=50", { token, revalidate: false }),
+  getProductsAdmin: (token: string) =>
+    request<Paged<ProductDto>>("/api/products?page=1&pageSize=50", { token, revalidate: false }),
+  getFaqsAdmin: (token: string) =>
+    request<Paged<FaqDto>>("/api/faqs?page=1&pageSize=50", { token, revalidate: false }),
+  getJobsAdmin: (token: string) =>
+    request<Paged<JobDto>>("/api/careers?page=1&pageSize=50&openOnly=false", { token, revalidate: false }),
+  getCaseStudiesAdmin: (token: string) =>
+    request<Paged<CaseStudyDto>>("/api/case-studies?page=1&pageSize=50", { token, revalidate: false }),
+  getTeamAdmin: (token: string) =>
+    request<Paged<TeamDto>>("/api/team?page=1&pageSize=50", { token, revalidate: false }),
+  updateEnquiryStatus: (token: string, id: string, status: string) =>
+    request<EnquiryAdminDto>(`/api/enquiries/${id}/status`, {
+      method: "PATCH",
+      token,
+      body: JSON.stringify({ status }),
     }),
 };
 
@@ -197,12 +229,33 @@ export type EnquiryPayload = {
   message: string;
   source?: string;
   pageUrl?: string;
-  isComplete?: boolean;
 };
 
 export type EnquiryDto = {
   id: string;
   draftSessionId?: string;
+};
+
+export type EnquiryAdminDto = {
+  id: string;
+  fullName: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  areaOfInterest: string;
+  message?: string;
+  status: string;
+  source?: string;
+  createdAt: string;
+};
+
+export type TokenResponse = {
+  accessToken: string;
+  refreshToken: string;
+  expiresAt: string;
+  email: string;
+  fullName: string;
+  role: string;
 };
 
 export type BookingPayload = {

@@ -134,14 +134,14 @@ export default async function Home() {
             </div>
           </Reveal>
           <Reveal delay={0.15}>
-            <div className="card-ze relative flex aspect-video items-center justify-center overflow-hidden bg-gradient-to-br from-navy to-navy-deep text-center">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,163,180,0.35),transparent_55%)]" />
-              <div className="relative">
-                <Sparkles size={48} className="mx-auto text-cyan" />
+            <div className="card-ze relative flex aspect-video items-center justify-center overflow-hidden bg-gradient-to-br from-[#07152e] via-[#0b2046] to-[#0a3a4a] text-center">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,163,180,0.35),transparent_58%)]" />
+              <div className="relative z-10 px-6">
+                <Sparkles size={48} className="mx-auto text-cyan drop-shadow-[0_0_12px_rgba(0,163,180,0.8)]" />
                 <p className="mt-3 font-display text-lg font-semibold text-white">
                   AI Shade Matching
                 </p>
-                <p className="mt-1 text-sm text-white/85">
+                <p className="mt-1 text-sm font-medium text-cyan-soft">
                   98% accuracy · Real-time results
                 </p>
               </div>

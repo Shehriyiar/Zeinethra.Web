@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Syne, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { SiteHeader } from "@/components/layout/SiteHeader";
-import { SiteFooter } from "@/components/layout/SiteFooter";
-import { CookieConsent } from "@/components/features/CookieConsent";
-import { WhatsAppButton } from "@/components/features/WhatsAppButton";
-import { AiChatWidget } from "@/components/features/AiChatWidget";
-import { CommandSearch } from "@/components/features/CommandSearch";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 
 const body = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -34,7 +29,7 @@ export const metadata: Metadata = {
   },
   description:
     "Technology that understands healthcare. Platforms built to transform every industry. Flagship product: Zenith Dental.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://zeinethra-web.vercel.app"),
   openGraph: {
     title: "Zeinethra",
     description: "Healthcare Technology · AI · IT Services — Solutions Across Platforms",
@@ -47,13 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className={`${body.variable} ${display.variable} ${mono.variable} font-body antialiased`}>
         <ThemeProvider>
-          <SiteHeader />
-          <main id="main">{children}</main>
-          <SiteFooter />
-          <CookieConsent />
-          <WhatsAppButton />
-          <AiChatWidget />
-          <CommandSearch />
+          <SiteChrome>{children}</SiteChrome>
         </ThemeProvider>
       </body>
     </html>

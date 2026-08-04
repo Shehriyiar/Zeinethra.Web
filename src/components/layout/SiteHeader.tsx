@@ -63,7 +63,7 @@ export function SiteHeader() {
     >
       <div className="container-ze flex h-16 items-center justify-between gap-4 md:h-[4.25rem]">
         <Link href="/" className="flex items-center gap-3" aria-label="Zeinethra home">
-          <BrandMark size={38} />
+          <BrandMark size={40} animated />
           <BrandWordmark inverted={!scrolled} />
         </Link>
 

@@ -10,7 +10,7 @@ type Particle = {
   vy: number;
   a: number;
   pulse: number;
-  hue: number;
+  kind: "pixel" | "dot";
 };
 
 export function ParticleField({ className = "" }: { className?: string }) {
@@ -25,6 +25,7 @@ export function ParticleField({ className = "" }: { className?: string }) {
     let raf = 0;
     let particles: Particle[] = [];
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const resize = () => {
       const parent = canvas.parentElement;
@@ -36,21 +37,22 @@ export function ParticleField({ className = "" }: { className?: string }) {
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const count = Math.min(90, Math.floor((width * height) / 14000));
-      particles = Array.from({ length: count }, () => ({
+      const count = Math.min(48, Math.floor((width * height) / 22000));
+      particles = Array.from({ length: count }, (_, i) => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        s: 1.5 + Math.random() * 3.5,
-        vx: (Math.random() - 0.5) * 0.35,
-        vy: -0.15 - Math.random() * 0.45,
-        a: 0.25 + Math.random() * 0.65,
+        s: i % 5 === 0 ? 2.8 : 1.2 + Math.random() * 1.8,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: -0.08 - Math.random() * 0.22,
+        a: 0.18 + Math.random() * 0.35,
         pulse: Math.random() * Math.PI * 2,
-        hue: Math.random() > 0.35 ? 186 : 210,
+        kind: i % 4 === 0 ? "pixel" : "dot",
       }));
     };
 
     resize();
     window.addEventListener("resize", resize);
+    if (reduce) return () => window.removeEventListener("resize", resize);
 
     const tick = () => {
       const w = canvas.width / dpr;
@@ -60,17 +62,27 @@ export function ParticleField({ className = "" }: { className?: string }) {
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
-        p.pulse += 0.03;
-        if (p.y < -10) p.y = h + 10;
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
+        p.pulse += 0.02;
+        if (p.y < -12) {
+          p.y = h + 8;
+          p.x = Math.random() * w;
+        }
+        if (p.x < -12) p.x = w + 8;
+        if (p.x > w + 12) p.x = -8;
 
-        const glow = 0.45 + Math.sin(p.pulse) * 0.35;
+        const glow = 0.55 + Math.sin(p.pulse) * 0.25;
         const alpha = p.a * glow;
-        ctx.fillStyle = `hsla(${p.hue}, 90%, 62%, ${alpha})`;
-        ctx.shadowColor = `hsla(${p.hue}, 100%, 60%, ${alpha})`;
-        ctx.shadowBlur = 12 + glow * 10;
-        ctx.fillRect(p.x, p.y, p.s, p.s);
+        ctx.fillStyle = `rgba(90, 208, 220, ${alpha})`;
+        ctx.shadowColor = `rgba(0, 163, 180, ${alpha * 0.9})`;
+        ctx.shadowBlur = p.kind === "pixel" ? 10 : 6;
+
+        if (p.kind === "pixel") {
+          ctx.fillRect(p.x, p.y, p.s, p.s);
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.s * 0.55, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
       ctx.shadowBlur = 0;
       raf = requestAnimationFrame(tick);
@@ -83,11 +95,5 @@ export function ParticleField({ className = "" }: { className?: string }) {
     };
   }, []);
 
-  return (
-    <canvas
-      ref={ref}
-      className={`pointer-events-none absolute inset-0 ${className}`}
-      aria-hidden
-    />
-  );
+  return <canvas ref={ref} className={`pointer-events-none absolute inset-0 ${className}`} aria-hidden />;
 }
