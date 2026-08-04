@@ -4,13 +4,13 @@
   --navy: #0b2046;
   --navy-deep: #07152e;
   --cyan: #00a3b4;
-  --cyan-soft: #33b8c5;
-  --bg: #f7f9fc;
+  --cyan-soft: #5ad0dc;
+  --bg: #f4f7fb;
   --bg-elevated: #ffffff;
   --surface: #ffffff;
   --text: #0b2046;
-  --text-muted: #5b6b86;
-  --border: rgba(11, 32, 70, 0.1);
+  --text-muted: #3d4f6f;
+  --border: rgba(11, 32, 70, 0.12);
   --shadow: 0 10px 40px rgba(11, 32, 70, 0.08);
   --radius: 1rem;
 }
@@ -19,9 +19,9 @@
   --bg: #07152e;
   --bg-elevated: #0b2046;
   --surface: #10284f;
-  --text: #f4f7fb;
-  --text-muted: #a9b6cb;
-  --border: rgba(255, 255, 255, 0.1);
+  --text: #f7fbff;
+  --text-muted: #c5d0e2;
+  --border: rgba(255, 255, 255, 0.14);
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
 
@@ -128,23 +128,74 @@ body {
 
 .hero-mesh {
   background:
-    radial-gradient(circle at 18% 20%, rgba(0, 163, 180, 0.22), transparent 36%),
-    radial-gradient(circle at 82% 12%, rgba(11, 32, 70, 0.35), transparent 40%),
-    linear-gradient(160deg, #07152e 0%, #0b2046 48%, #0a2e4d 100%);
+    radial-gradient(circle at 50% 45%, rgba(0, 163, 180, 0.2), transparent 38%),
+    radial-gradient(circle at 12% 18%, rgba(0, 163, 180, 0.18), transparent 34%),
+    radial-gradient(circle at 88% 8%, rgba(51, 184, 197, 0.16), transparent 32%),
+    linear-gradient(165deg, #040d1c 0%, #0b2046 46%, #06263a 100%);
+  color: #ffffff;
+}
+
+.hero-mesh .eyebrow {
+  color: var(--cyan-soft);
+}
+
+.logo-float {
+  animation: logoFloat 5.5s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+.logo-glow {
+  position: absolute;
+  inset: -18%;
+  border-radius: 40%;
+  background: radial-gradient(circle, rgba(0, 163, 180, 0.55), transparent 68%);
+  filter: blur(22px);
+  animation: glowPulse 3.2s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes logoFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotateY(-8deg) rotateZ(-2deg);
+  }
+  50% {
+    transform: translateY(-18px) rotateY(8deg) rotateZ(2deg);
+  }
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
 }
 
 .reveal {
-  animation: rise 0.8s ease both;
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(28px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-float,
+  .logo-glow,
+  .reveal {
+    animation: none !important;
   }
 }
 

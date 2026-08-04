@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { NewsletterForm } from "@/components/features/NewsletterForm";
+import { BrandMark } from "@/components/brand/BrandMark";
 
 const cols = [
   {
@@ -47,9 +47,9 @@ export function SiteFooter() {
       <div className="container-ze grid gap-10 py-14 lg:grid-cols-[1.2fr_2fr]">
         <div>
           <div className="flex items-center gap-3">
-            <Image src="/brand/logo.png" alt="" width={40} height={40} />
+            <BrandMark size={42} />
             <div>
-              <div className="font-display text-xl font-bold tracking-wide">ZEINETHRA</div>
+              <div className="font-display text-xl font-bold tracking-wide text-foreground">ZEINETHRA</div>
               <div className="text-xs tracking-[0.16em] text-cyan">SOLUTIONS ACROSS PLATFORMS</div>
             </div>
           </div>
