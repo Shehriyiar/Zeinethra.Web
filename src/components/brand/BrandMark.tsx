@@ -30,7 +30,7 @@ export function BrandMark({
         width={size}
         height={size}
         priority={priority}
-        className="relative z-[1] h-full w-full object-contain drop-shadow-[0_8px_24px_rgba(0,163,180,0.35)]"
+        className="relative z-[1] h-full w-full object-contain brightness-110 contrast-110 drop-shadow-[0_0_18px_rgba(0,200,220,0.55)]"
       />
     </span>
   );

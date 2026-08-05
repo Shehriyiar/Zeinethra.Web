@@ -2,106 +2,71 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ParticleField } from "@/components/effects/ParticleField";
 
 export function HomeHero() {
   return (
     <section className="hero-world relative min-h-[100svh] overflow-hidden">
-      <ParticleField className="opacity-70" />
+      <ParticleField className="opacity-65" />
       <div className="hero-beams pointer-events-none absolute inset-0" aria-hidden />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_42%,rgba(0,163,180,0.2),transparent_38%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(2,8,20,0.85),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(0,200,220,0.18),transparent_42%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_110%,rgba(2,8,20,0.9),transparent_50%)]" />
 
-      <div className="container-ze relative z-10 grid min-h-[100svh] items-center gap-10 py-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 lg:py-28">
-        {/* Left content */}
-        <div className="reveal text-left text-white">
-          <p className="eyebrow mb-4 text-cyan-soft">
+      <div className="container-ze relative z-10 grid min-h-[100svh] items-center gap-8 py-20 max-sm:pt-24 sm:gap-10 sm:py-24 lg:grid-cols-2 lg:gap-8 lg:py-28">
+        {/* Copy */}
+        <div className="reveal order-2 text-center text-white lg:order-1 lg:text-left">
+          <p className="eyebrow mb-3 text-cyan-soft sm:mb-4">
             HEALTHCARE TECHNOLOGY · AI · ENTERPRISE
           </p>
-          <h1 className="font-display text-5xl font-bold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
+          <h1 className="font-display text-[2.6rem] font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             <span className="block text-white">ZEINETHRA</span>
-            <span className="mt-3 block text-[0.38em] font-semibold tracking-[0.2em] text-cyan-soft sm:text-[0.42em]">
+            <span className="mt-2 block text-[0.36em] font-semibold tracking-[0.18em] text-cyan-soft sm:mt-3 sm:text-[0.4em] sm:tracking-[0.2em]">
               TECHNOLOGY · AI · IT SERVICES
             </span>
           </h1>
-          <p className="mt-3 text-xs font-medium tracking-[0.22em] text-white/85 sm:text-sm">
+          <p className="mt-3 text-[11px] font-medium tracking-[0.2em] text-white/90 sm:text-xs sm:tracking-[0.22em]">
             SOLUTIONS ACROSS PLATFORMS
           </p>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/90 md:text-lg">
+          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-white/90 sm:mt-6 sm:text-base md:text-lg lg:mx-0">
             Technology that understands healthcare — platforms built to transform
             every industry. From Zenith Dental to enterprise AI.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
-            <Link href="/products/zenith-dental" className="btn-primary">
+          <div className="mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center lg:justify-start">
+            <Link href="/products/zenith-dental" className="btn-primary w-full sm:w-auto">
               Explore Zenith Dental <ArrowRight size={16} />
             </Link>
-            <Link
-              href="/contact"
-              className="btn-secondary border-white/30 text-white hover:border-cyan hover:text-white"
-            >
+            <Link href="/contact" className="btn-on-dark w-full sm:w-auto">
               Book consultation
             </Link>
           </div>
-          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/80">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-white/85 sm:mt-8 sm:gap-x-6 sm:text-sm lg:justify-start">
             <span>Clinical platforms</span>
-            <span className="text-cyan">·</span>
-            <span>Applied AI</span>
-            <span className="text-cyan">·</span>
+            <span className="hidden text-cyan sm:inline">·</span>
             <span>Enterprise delivery</span>
+            <span className="hidden text-cyan sm:inline">·</span>
+            <span>Secure by design</span>
           </div>
         </div>
 
-        {/* Right: logo + product card */}
-        <div className="relative mx-auto flex w-full max-w-[460px] flex-col items-center">
-          <div className="logo-stage relative flex h-[260px] w-full items-center justify-center sm:h-[320px] md:h-[360px]">
+        {/* Crystal logo stage */}
+        <div className="order-1 mx-auto flex w-full max-w-[420px] items-center justify-center lg:order-2 lg:max-w-none">
+          <div className="crystal-orb logo-stage relative flex aspect-square w-[min(86vw,360px)] items-center justify-center sm:w-[min(70vw,400px)] lg:w-[min(100%,440px)]">
             <span className="orbit orbit-a" aria-hidden />
             <span className="orbit orbit-b" aria-hidden />
             <span className="orbit orbit-c" aria-hidden />
             <span className="orbit-ring-floor" aria-hidden />
             <span className="logo-aura" aria-hidden />
-            <div className="logo-world relative z-10 flex flex-col items-center">
+            <div className="crystal-glass absolute inset-[12%] rounded-full" aria-hidden />
+            <div className="logo-world relative z-10 px-6">
               <Image
                 src="/brand/logo-mark.png"
                 alt="Zeinethra"
-                width={280}
-                height={240}
+                width={320}
+                height={280}
                 priority
-                className="h-auto w-[160px] object-contain drop-shadow-[0_0_40px_rgba(0,163,180,0.55)] sm:w-[200px] md:w-[240px]"
+                className="mx-auto h-auto w-[58%] max-w-[220px] object-contain brightness-110 contrast-110 drop-shadow-[0_0_48px_rgba(0,220,240,0.65)] sm:w-[62%] sm:max-w-[260px]"
               />
-              <div className="mt-3 text-center">
-                <div className="font-display text-2xl font-bold tracking-[0.12em] text-white sm:text-3xl">
-                  ZEINETHRA
-                </div>
-                <div className="mt-1 text-[10px] font-semibold tracking-[0.18em] text-cyan-soft sm:text-xs">
-                  TECHNOLOGY · AI · IT SERVICES
-                </div>
-                <div className="mt-1 text-[10px] tracking-[0.2em] text-white/80">
-                  SOLUTIONS ACROSS PLATFORMS
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="reveal relative z-10 mt-2 w-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#07152e] via-[#0b2046] to-[#0a3a4a] p-6 text-center shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:p-7">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(0,163,180,0.35),transparent_60%)]" />
-            <div className="relative">
-              <Sparkles
-                size={40}
-                className="mx-auto text-cyan drop-shadow-[0_0_12px_rgba(0,163,180,0.9)]"
-              />
-              <p className="mt-3 font-display text-lg font-semibold text-white sm:text-xl">
-                AI Shade Matching
-              </p>
-              <p className="mt-1 text-sm font-medium text-cyan-soft">
-                98% accuracy · Real-time results
-              </p>
-              <Link
-                href="/products/zenith-dental"
-                className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-white hover:text-cyan"
-              >
-                Open product tour <ArrowRight size={14} />
-              </Link>
             </div>
           </div>
         </div>
