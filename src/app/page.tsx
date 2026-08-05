@@ -134,14 +134,14 @@ export default async function Home() {
             </div>
           </Reveal>
           <Reveal delay={0.15}>
-            <div className="card-ze relative flex aspect-video items-center justify-center overflow-hidden bg-gradient-to-br from-[#07152e] via-[#0b2046] to-[#0a3a4a] text-center">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(0,163,180,0.35),transparent_58%)]" />
+            <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-[var(--radius)] border border-[rgba(11,32,70,0.12)] text-center shadow-[var(--shadow)]" style={{ background: "linear-gradient(145deg, #07152e 0%, #0b2046 45%, #0a3a4a 100%)" }}>
+              <div className="absolute inset-0" style={{ background: "radial-gradient(circle at 50% 40%, rgba(0,163,180,0.4), transparent 58%)" }} />
               <div className="relative z-10 px-6">
-                <Sparkles size={48} className="mx-auto text-cyan drop-shadow-[0_0_12px_rgba(0,163,180,0.8)]" />
-                <p className="mt-3 font-display text-lg font-semibold text-white">
+                <Sparkles size={48} className="mx-auto text-[#5ad0dc] drop-shadow-[0_0_12px_rgba(0,163,180,0.9)]" />
+                <p className="mt-3 font-display text-lg font-semibold text-white md:text-xl">
                   AI Shade Matching
                 </p>
-                <p className="mt-1 text-sm font-medium text-cyan-soft">
+                <p className="mt-2 text-sm font-semibold text-[#5ad0dc]">
                   98% accuracy · Real-time results
                 </p>
               </div>
