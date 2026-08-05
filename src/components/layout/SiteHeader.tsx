@@ -52,6 +52,13 @@ export function SiteHeader() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <header
       className={clsx(
@@ -61,10 +68,10 @@ export function SiteHeader() {
           : "border-white/10 bg-[color-mix(in_srgb,#07152e_72%,transparent)]"
       )}
     >
-      <div className="container-ze flex h-16 items-center justify-between gap-4 md:h-[4.25rem]">
-        <Link href="/" className="flex items-center gap-3" aria-label="Zeinethra home">
-          <BrandMark size={40} animated />
-          <BrandWordmark inverted={!scrolled} />
+      <div className="container-ze flex h-14 items-center justify-between gap-2 sm:h-16 sm:gap-3 md:h-[4.25rem]">
+        <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3" aria-label="Zeinethra home">
+          <BrandMark size={34} animated />
+          <BrandWordmark inverted={!scrolled} className="min-w-0" />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
@@ -74,11 +81,11 @@ export function SiteHeader() {
           <MegaTrigger inverted={!scrolled} label="Resources" active={mega === "resources"} onToggle={() => setMega(mega === "resources" ? null : "resources")} />
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             className={clsx(
-              "inline-flex h-10 w-10 items-center justify-center rounded-full border hover:text-cyan",
+              "hidden h-9 w-9 items-center justify-center rounded-full border hover:text-cyan sm:inline-flex sm:h-10 sm:w-10",
               !scrolled ? "border-white/25 text-white/85" : "border-[var(--border)] text-muted"
             )}
             aria-label="Open search"
@@ -89,7 +96,7 @@ export function SiteHeader() {
           <button
             type="button"
             className={clsx(
-              "inline-flex h-10 w-10 items-center justify-center rounded-full border hover:text-cyan",
+              "hidden h-9 w-9 items-center justify-center rounded-full border hover:text-cyan sm:inline-flex sm:h-10 sm:w-10",
               !scrolled ? "border-white/25 text-white/85" : "border-[var(--border)] text-muted"
             )}
             aria-label="Toggle theme"
@@ -97,19 +104,17 @@ export function SiteHeader() {
           >
             {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-          <Link href="/contact" className="btn-primary hidden sm:inline-flex">
+          <Link href="/contact" className="btn-primary !hidden !px-4 !py-2 text-sm lg:!inline-flex">
             Enquire
           </Link>
           <button
             type="button"
-            className={clsx(
-              "inline-flex h-10 w-10 items-center justify-center rounded-full border lg:hidden",
-              !scrolled ? "border-white/25 text-white" : "border-[var(--border)]"
-            )}
-            aria-label="Open menu"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-cyan text-white shadow-[0_0_20px_rgba(0,163,180,0.45)] lg:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
-            {open ? <X size={18} /> : <Menu size={18} />}
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
@@ -128,13 +133,41 @@ export function SiteHeader() {
       )}
 
       {open && (
-        <div className="border-t border-[var(--border)] bg-[var(--bg-elevated)] lg:hidden">
-          <div className="container-ze flex flex-col gap-2 py-4">
+        <div className="max-h-[calc(100svh-3.5rem)] overflow-y-auto border-t border-white/10 bg-[#07152e] lg:hidden">
+          <div className="container-ze flex flex-col gap-1 py-4 pb-8">
+            <p className="px-3 pb-2 font-mono text-[10px] tracking-[0.2em] text-cyan-soft">MENU</p>
             {[...solutions, ...company, ...resources].map((item) => (
-              <Link key={item.href} href={item.href} className="rounded-xl px-3 py-3 text-foreground hover:bg-[color-mix(in_srgb,var(--cyan)_8%,transparent)]" onClick={() => setOpen(false)}>
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-xl px-3 py-3.5 text-base font-medium text-white hover:bg-white/5"
+                onClick={() => setOpen(false)}
+              >
                 {item.label}
               </Link>
             ))}
+            <div className="mt-3 grid grid-cols-2 gap-2 px-1">
+              <button
+                type="button"
+                className="rounded-xl border border-white/20 px-3 py-3 text-sm text-white"
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent("ze:open-search"));
+                  setOpen(false);
+                }}
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                className="rounded-xl border border-white/20 px-3 py-3 text-sm text-white"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              >
+                {theme === "dark" ? "Light mode" : "Dark mode"}
+              </button>
+            </div>
+            <Link href="/contact" className="btn-primary mt-3 w-full" onClick={() => setOpen(false)}>
+              Enquire
+            </Link>
           </div>
         </div>
       )}

@@ -46,10 +46,10 @@ export function BrandWordmark({
   inverted?: boolean;
 }) {
   return (
-    <div className={clsx("leading-tight", className)}>
+    <div className={clsx("min-w-0 leading-tight", className)}>
       <div
         className={clsx(
-          "font-display text-lg font-bold tracking-[0.06em]",
+          "font-display truncate text-base font-bold tracking-[0.06em] sm:text-lg",
           inverted ? "text-white" : "text-foreground"
         )}
       >

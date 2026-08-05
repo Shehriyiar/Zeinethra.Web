@@ -58,15 +58,23 @@ export function HomeHero() {
             <span className="orbit-ring-floor" aria-hidden />
             <span className="logo-aura" aria-hidden />
             <div className="crystal-glass absolute inset-[12%] rounded-full" aria-hidden />
-            <div className="logo-world relative z-10 px-6">
+            <div className="logo-world relative z-10 flex flex-col items-center px-4 sm:px-6">
               <Image
                 src="/brand/logo-mark.png"
                 alt="Zeinethra"
                 width={320}
                 height={280}
                 priority
-                className="mx-auto h-auto w-[58%] max-w-[220px] object-contain brightness-110 contrast-110 drop-shadow-[0_0_48px_rgba(0,220,240,0.65)] sm:w-[62%] sm:max-w-[260px]"
+                className="mx-auto h-auto w-[52%] max-w-[200px] object-contain brightness-110 contrast-110 drop-shadow-[0_0_48px_rgba(0,220,240,0.65)] sm:w-[58%] sm:max-w-[240px]"
               />
+              <div className="mt-4 text-center sm:mt-5">
+                <div className="font-display text-xl font-bold tracking-[0.14em] text-white sm:text-2xl md:text-3xl">
+                  ZEINETHRA
+                </div>
+                <div className="mt-1.5 text-[10px] font-semibold tracking-[0.2em] text-cyan-soft sm:text-xs">
+                  TECHNOLOGY · AI · IT
+                </div>
+              </div>
             </div>
           </div>
         </div>
