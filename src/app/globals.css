@@ -139,6 +139,108 @@ body {
   color: var(--cyan-soft);
 }
 
+.hero-world {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(0, 180, 210, 0.16), transparent 36%),
+    radial-gradient(circle at 20% 80%, rgba(0, 100, 160, 0.12), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(40, 120, 255, 0.1), transparent 35%),
+    linear-gradient(180deg, #02060f 0%, #061228 42%, #0a1f3d 100%);
+  color: #ffffff;
+}
+
+.hero-beams {
+  background:
+    linear-gradient(125deg, transparent 40%, rgba(0, 163, 180, 0.05) 50%, transparent 60%),
+    linear-gradient(55deg, transparent 42%, rgba(80, 140, 255, 0.04) 52%, transparent 62%);
+  animation: beamDrift 18s ease-in-out infinite alternate;
+}
+
+.logo-stage {
+  perspective: 1200px;
+}
+
+.logo-world {
+  animation: worldFloat 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.logo-aura {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 200, 220, 0.35), transparent 70%);
+  filter: blur(28px);
+  animation: glowPulse 3.4s ease-in-out infinite;
+  z-index: 0;
+}
+
+.orbit {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 1px solid rgba(90, 208, 220, 0.28);
+  box-shadow: 0 0 18px rgba(0, 163, 180, 0.15), inset 0 0 18px rgba(0, 163, 180, 0.08);
+  pointer-events: none;
+}
+
+.orbit-a {
+  inset: 4%;
+  animation: orbitSpinA 22s linear infinite;
+}
+
+.orbit-b {
+  inset: 14%;
+  border-color: rgba(0, 163, 180, 0.35);
+  animation: orbitSpinB 16s linear infinite reverse;
+}
+
+.orbit-c {
+  inset: 0%;
+  border-color: rgba(120, 190, 255, 0.18);
+  animation: orbitSpinC 28s linear infinite;
+}
+
+@keyframes orbitSpinA {
+  from {
+    transform: rotateX(68deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(68deg) rotateZ(360deg);
+  }
+}
+
+@keyframes orbitSpinB {
+  from {
+    transform: rotateX(72deg) rotateZ(40deg);
+  }
+  to {
+    transform: rotateX(72deg) rotateZ(400deg);
+  }
+}
+
+@keyframes orbitSpinC {
+  from {
+    transform: rotateX(64deg) rotateZ(-25deg);
+  }
+  to {
+    transform: rotateX(64deg) rotateZ(335deg);
+  }
+}
+
+.orbit-ring-floor {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 72%;
+  height: 18%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 1px solid rgba(90, 208, 220, 0.35);
+  box-shadow: 0 0 30px rgba(0, 163, 180, 0.25);
+  animation: floorPulse 3.2s ease-in-out infinite;
+}
+
 .logo-float {
   animation: logoFloat 5.5s ease-in-out infinite;
   transform-style: preserve-3d;
@@ -154,13 +256,46 @@ body {
   z-index: 0;
 }
 
+@keyframes worldFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotateY(-12deg) rotateZ(-2deg) scale(1);
+  }
+  50% {
+    transform: translateY(-22px) rotateY(12deg) rotateZ(2deg) scale(1.03);
+  }
+}
+
+@keyframes floorPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateX(-50%) scaleX(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateX(-50%) scaleX(1.06);
+  }
+}
+
+@keyframes beamDrift {
+  from {
+    opacity: 0.55;
+    transform: translateX(-2%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(2%);
+  }
+}
+
 @keyframes logoFloat {
   0%,
   100% {
     transform: translateY(0) rotate(-2deg) scale(1);
   }
   50% {
-    transform: translateY(-6px) rotate(2deg) scale(1.04);
+    transform: translateY(-8px) rotate(2deg) scale(1.05);
   }
 }
 
@@ -177,7 +312,7 @@ body {
 }
 
 .reveal {
-  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes rise {
@@ -194,6 +329,10 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .logo-float,
   .logo-glow,
+  .logo-world,
+  .orbit,
+  .orbit-ring-floor,
+  .hero-beams,
   .reveal {
     animation: none !important;
   }

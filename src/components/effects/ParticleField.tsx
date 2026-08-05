@@ -10,7 +10,7 @@ type Particle = {
   vy: number;
   a: number;
   pulse: number;
-  kind: "pixel" | "dot";
+  kind: "pixel" | "star";
 };
 
 export function ParticleField({ className = "" }: { className?: string }) {
@@ -37,16 +37,16 @@ export function ParticleField({ className = "" }: { className?: string }) {
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const count = Math.min(48, Math.floor((width * height) / 22000));
+      const count = Math.min(70, Math.floor((width * height) / 16000));
       particles = Array.from({ length: count }, (_, i) => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        s: i % 5 === 0 ? 2.8 : 1.2 + Math.random() * 1.8,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: -0.08 - Math.random() * 0.22,
-        a: 0.18 + Math.random() * 0.35,
+        s: i % 7 === 0 ? 2.4 : 0.8 + Math.random() * 1.6,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: -0.05 - Math.random() * 0.18,
+        a: 0.15 + Math.random() * 0.45,
         pulse: Math.random() * Math.PI * 2,
-        kind: i % 4 === 0 ? "pixel" : "dot",
+        kind: i % 5 === 0 ? "pixel" : "star",
       }));
     };
 
@@ -62,7 +62,7 @@ export function ParticleField({ className = "" }: { className?: string }) {
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
-        p.pulse += 0.02;
+        p.pulse += 0.025;
         if (p.y < -12) {
           p.y = h + 8;
           p.x = Math.random() * w;
@@ -70,17 +70,17 @@ export function ParticleField({ className = "" }: { className?: string }) {
         if (p.x < -12) p.x = w + 8;
         if (p.x > w + 12) p.x = -8;
 
-        const glow = 0.55 + Math.sin(p.pulse) * 0.25;
+        const glow = 0.5 + Math.sin(p.pulse) * 0.35;
         const alpha = p.a * glow;
-        ctx.fillStyle = `rgba(90, 208, 220, ${alpha})`;
-        ctx.shadowColor = `rgba(0, 163, 180, ${alpha * 0.9})`;
-        ctx.shadowBlur = p.kind === "pixel" ? 10 : 6;
+        ctx.fillStyle = `rgba(120, 230, 245, ${alpha})`;
+        ctx.shadowColor = `rgba(0, 200, 220, ${alpha})`;
+        ctx.shadowBlur = p.kind === "pixel" ? 12 : 8;
 
         if (p.kind === "pixel") {
           ctx.fillRect(p.x, p.y, p.s, p.s);
         } else {
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.s * 0.55, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, p.s * 0.45, 0, Math.PI * 2);
           ctx.fill();
         }
       }
