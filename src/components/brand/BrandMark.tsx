@@ -27,8 +27,10 @@ export function BrandMark({
       <Image
         src="/brand/logo-mark.png"
         alt="Zeinethra"
-        width={size}
-        height={size}
+        width={size * 3}
+        height={size * 3}
+        quality={100}
+        sizes={`${size}px`}
         priority={priority}
         className="relative z-[1] h-full w-full object-contain brightness-110 contrast-110 drop-shadow-[0_0_18px_rgba(0,200,220,0.55)]"
       />

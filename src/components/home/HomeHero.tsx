@@ -62,8 +62,10 @@ export function HomeHero() {
               <Image
                 src="/brand/logo-mark.png"
                 alt="Zeinethra"
-                width={320}
-                height={280}
+                width={1920}
+                height={1115}
+                quality={100}
+                sizes="(max-width: 640px) 200px, (max-width: 1024px) 240px, 280px"
                 priority
                 className="mx-auto h-auto w-[52%] max-w-[200px] object-contain brightness-110 contrast-110 drop-shadow-[0_0_48px_rgba(0,220,240,0.65)] sm:w-[58%] sm:max-w-[240px]"
               />

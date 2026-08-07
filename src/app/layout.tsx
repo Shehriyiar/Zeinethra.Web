@@ -30,10 +30,28 @@ export const metadata: Metadata = {
   description:
     "Technology that understands healthcare. Platforms built to transform every industry. Flagship product: Zenith Dental.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://zeinethra-web.vercel.app"),
+  icons: {
+    icon: [{ url: "/brand/icon-512.png", sizes: "512x512", type: "image/png" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     title: "Zeinethra",
     description: "Healthcare Technology · AI · IT Services — Solutions Across Platforms",
     type: "website",
+    images: [
+      {
+        url: "/brand/og-cover.png",
+        width: 1920,
+        height: 1080,
+        alt: "Zeinethra — Technology · AI · IT Services",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zeinethra",
+    description: "Healthcare Technology · AI · IT Services — Solutions Across Platforms",
+    images: ["/brand/og-cover.png"],
   },
 };
 
